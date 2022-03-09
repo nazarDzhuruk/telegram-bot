@@ -25,18 +25,5 @@ public class TelegramTestBotApplication {
     public static void main(String[] args) throws IOException {
         SpringApplication.run(TelegramTestBotApplication.class);
 
-        Document document = Jsoup.connect("https://kinogo.film/").get();
-        Elements element = document.getElementsByClass("miniblock");
-
-        List<String> genres = element.select("a").eachText().stream().collect(Collectors.toList());
-
-        List<String> links = element.select("a").eachAttr("href")
-                .stream().collect(Collectors.toList());
-
-        List<Genre> genresWithLink = IntStream.range(0, genres.size())
-                .mapToObj(i -> new Genre(genres.get(i), links.get(i)))
-                .collect(Collectors.toList());
-
-        HtmlDataParser.getGenres().forEach(System.out::println);
     }
 }
