@@ -21,7 +21,9 @@ public class TelegramUserAction implements TelegramUserService {
 
     @Override
     public TelegramUser addUser(TelegramUser telegramUser) {
-        repository.save(telegramUser);
+        if (repository.findById(telegramUser.getTelegramId()).isEmpty()) {
+            repository.save(telegramUser);
+        }
         return telegramUser;
     }
 
