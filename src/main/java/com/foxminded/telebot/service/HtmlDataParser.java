@@ -26,7 +26,7 @@ public class HtmlDataParser {
         try {
             document = Jsoup.connect(LINK).get();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new HtmlDataParserException(e.getMessage());
         }
     }
 
