@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface TelegramUserService {
     TelegramUser addUser(TelegramUser telegramUser);
-    TelegramUser removeUserById(long userId);
+    TelegramUser removeUserById(int userId);
     TelegramUser updateUser(TelegramUser telegramUser);
+    TelegramUser findUserByChatId(int userId);
     List<TelegramUser> userList();
 }

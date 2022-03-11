@@ -21,14 +21,14 @@ public class TelegramUserAction implements TelegramUserService {
 
     @Override
     public TelegramUser addUser(TelegramUser telegramUser) {
-        if (repository.findById(telegramUser.getTelegramId()).isEmpty()) {
+        if (repository.findById(telegramUser.getId()).isEmpty()) {
             repository.save(telegramUser);
-        }
+        } else throw new TelebotServiceException("User exist !");
         return telegramUser;
     }
 
     @Override
-    public TelegramUser removeUserById(long userId) {
+    public TelegramUser removeUserById(int userId) {
         TelegramUser telegramUser = repository.findById(userId)
                 .orElseThrow(() -> new TelebotServiceException(EXPECTED_EXCEPTION));
         repository.delete(telegramUser);
@@ -42,6 +42,12 @@ public class TelegramUserAction implements TelegramUserService {
         telegramUserFromDatabase.setNickname(telegramUser.getNickname());
         repository.save(telegramUserFromDatabase);
         return telegramUserFromDatabase;
+    }
+
+    @Override
+    public TelegramUser findUserByChatId(int userId) {
+        return repository.findById(userId)
+                .orElseThrow(() -> new TelebotServiceException(EXPECTED_EXCEPTION));
     }
 
     @Override

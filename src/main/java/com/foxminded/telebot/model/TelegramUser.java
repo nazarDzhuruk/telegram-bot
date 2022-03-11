@@ -7,30 +7,22 @@ import java.util.Objects;
 @Entity
 public class TelegramUser {
     @Id
-    private Long id;
-    private Long telegramId;
+    private Integer id;
     private String nickname;
 
-    public TelegramUser(){
-        super();
-    }
+    protected TelegramUser(){}
 
-    public TelegramUser(long id, String nickname) {
-        this();
+    public TelegramUser(Integer id, String nickname) {
         this.id = id;
         this.nickname = nickname;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public Long getTelegramId() {
-        return telegramId;
-    }
-
-    public void setTelegramId(Long telegramId) {
-        this.telegramId = telegramId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNickname() {
@@ -45,20 +37,19 @@ public class TelegramUser {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TelegramUser)) return false;
-        TelegramUser that = (TelegramUser) o;
-        return Objects.equals(id, that.id) && Objects.equals(telegramId, that.telegramId) && Objects.equals(nickname, that.nickname);
+        TelegramUser user = (TelegramUser) o;
+        return Objects.equals(id, user.id) && Objects.equals(nickname, user.nickname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, telegramId, nickname);
+        return Objects.hash(id, nickname);
     }
 
     @Override
     public String toString() {
         return "TelegramUser{" +
                 "id=" + id +
-                ", telegramId=" + telegramId +
                 ", nickname='" + nickname + '\'' +
                 '}';
     }
