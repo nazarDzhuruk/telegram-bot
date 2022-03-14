@@ -1,5 +1,7 @@
-package com.foxminded.telebot.keyboard;
+package com.foxminded.telebot.keyboard.service.implementation;
 
+import com.foxminded.telebot.keyboard.service.KeyboardService;
+import com.foxminded.telebot.keyboard.service.KeyboardType;
 import com.foxminded.telebot.service.GenreService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -8,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class KeyboardAction implements KeyboardService {
+public class GenreKeyboardAction implements KeyboardService {
     private final GenreService genreService;
 
-    public KeyboardAction(GenreService genreService) {
+    public GenreKeyboardAction(GenreService genreService) {
         this.genreService = genreService;
     }
 

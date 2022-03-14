@@ -1,4 +1,4 @@
-package com.foxminded.telebot.keyboard;
+package com.foxminded.telebot.keyboard.service;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
