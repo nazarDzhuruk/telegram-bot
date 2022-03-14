@@ -18,6 +18,7 @@ public class HtmlDataParser {
     private static final String HTML_ELEMENT = "a";
     private static final String HTML_ATTRIBUTE = "href";
     private static Document document;
+    private static Document mapper;
 
     private HtmlDataParser() {
     }
@@ -37,15 +38,37 @@ public class HtmlDataParser {
 
     }
 
-    public static List<String> getFilmsRating(String genreLink, String pageNumber) {
-        Document pageMapper;
+    public static List<String> getTitles(String genreLink, String pageNumber) {
         String path = LINK + genreLink + pageNumber;
         try {
-            pageMapper = Jsoup.connect(path).get();
+            mapper = Jsoup.connect(path).get();
         } catch (IOException e) {
             throw new HtmlDataParserException(e.getMessage());
         }
-        return pageMapper.getElementsByClass("rating_digits_1").eachText();
+        return mapper.getElementsByClass("zagolovki").eachText();
+    }
+
+
+    public static List<String> getFilmsLink(String genreLink, String pageNumber) {
+        String path = LINK + genreLink + pageNumber;
+        try {
+            mapper = Jsoup.connect(path).get();
+        } catch (IOException e) {
+            throw new HtmlDataParserException(e.getMessage());
+        }
+        return mapper.getElementsByClass("zagolovki").select("a")
+                .eachAttr("href").stream()
+                .map(s -> s.split(LINK)[1])
+                .map(s -> s.replace(".html", "")).collect(Collectors.toList());
+    }
+
+    public static String getFilmDesc(String path) {
+        try {
+            mapper = Jsoup.connect(path).get();
+        } catch (IOException e) {
+            throw new HtmlDataParserException(e.getMessage());
+        }
+        return mapper.getElementsByClass("fullimg").text();
     }
 
     private static List<String> getGenresAsText() {
