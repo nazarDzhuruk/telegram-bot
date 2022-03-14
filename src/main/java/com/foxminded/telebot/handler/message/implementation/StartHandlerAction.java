@@ -1,7 +1,9 @@
-package com.foxminded.telebot.handler.message;
+package com.foxminded.telebot.handler.message.implementation;
 
 import com.foxminded.telebot.exception.TelebotServiceException;
 import com.foxminded.telebot.exception.UpdateHandlerException;
+import com.foxminded.telebot.handler.message.Command;
+import com.foxminded.telebot.handler.message.MessageHandler;
 import com.foxminded.telebot.model.TelegramUser;
 import com.foxminded.telebot.service.TelegramUserService;
 import org.springframework.beans.factory.annotation.Autowired;
