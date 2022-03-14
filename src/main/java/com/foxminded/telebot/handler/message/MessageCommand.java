@@ -1,4 +1,4 @@
-package com.foxminded.telebot.handler;
+package com.foxminded.telebot.handler.message;
 
 public enum Command {
     ABOUT("about", "About bot, author and open source"),
