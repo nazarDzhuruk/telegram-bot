@@ -1,8 +1,11 @@
 package com.foxminded.telebot.handler;
 
-import com.foxminded.telebot.handler.Command;
+import com.foxminded.telebot.handler.callback.Callback;
+import com.foxminded.telebot.handler.callback.CallbackHandler;
+import com.foxminded.telebot.handler.message.MessageCommand;
 import com.foxminded.telebot.handler.message.MessageHandler;
 
 public interface HandlerFactory {
-    MessageHandler handleUpdate(Command command);
+    MessageHandler handleUpdate(MessageCommand messageCommand);
+    CallbackHandler handleCallBack(Callback callback);
 }
