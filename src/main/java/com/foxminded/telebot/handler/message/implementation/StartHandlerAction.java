@@ -2,7 +2,7 @@ package com.foxminded.telebot.handler.message.implementation;
 
 import com.foxminded.telebot.exception.TelebotServiceException;
 import com.foxminded.telebot.exception.UpdateHandlerException;
-import com.foxminded.telebot.handler.message.Command;
+import com.foxminded.telebot.handler.message.MessageCommand;
 import com.foxminded.telebot.handler.message.MessageHandler;
 import com.foxminded.telebot.model.TelegramUser;
 import com.foxminded.telebot.service.TelegramUserService;
@@ -36,8 +36,8 @@ public class StartHandlerAction implements MessageHandler {
     }
 
     @Override
-    public Command getUniqueCommand() {
-        return Command.START;
+    public MessageCommand getUniqueCommand() {
+        return MessageCommand.START;
     }
 
 }

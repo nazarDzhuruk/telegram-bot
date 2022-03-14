@@ -2,7 +2,7 @@ package com.foxminded.telebot.handler.message.implementation;
 
 import com.foxminded.telebot.exception.TelebotServiceException;
 import com.foxminded.telebot.exception.UpdateHandlerException;
-import com.foxminded.telebot.handler.message.Command;
+import com.foxminded.telebot.handler.message.MessageCommand;
 import com.foxminded.telebot.handler.message.MessageHandler;
 import com.foxminded.telebot.service.TelegramUserService;
 import org.springframework.stereotype.Component;
@@ -33,7 +33,7 @@ public class StopHandlerAction implements MessageHandler {
     }
 
     @Override
-    public Command getUniqueCommand() {
-        return Command.STOP;
+    public MessageCommand getUniqueCommand() {
+        return MessageCommand.STOP;
     }
 }

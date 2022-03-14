@@ -1,7 +1,7 @@
 package com.foxminded.telebot.handler.message.implementation;
 
 import com.foxminded.telebot.exception.UpdateHandlerException;
-import com.foxminded.telebot.handler.message.Command;
+import com.foxminded.telebot.handler.message.MessageCommand;
 import com.foxminded.telebot.handler.message.MessageHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -24,7 +24,7 @@ public class AboutHandlerAction implements MessageHandler {
     }
 
     @Override
-    public Command getUniqueCommand() {
-        return Command.ABOUT;
+    public MessageCommand getUniqueCommand() {
+        return MessageCommand.ABOUT;
     }
 }

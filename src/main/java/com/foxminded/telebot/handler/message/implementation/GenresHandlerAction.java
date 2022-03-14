@@ -1,7 +1,7 @@
 package com.foxminded.telebot.handler.message.implementation;
 
 import com.foxminded.telebot.exception.UpdateHandlerException;
-import com.foxminded.telebot.handler.message.Command;
+import com.foxminded.telebot.handler.message.MessageCommand;
 import com.foxminded.telebot.handler.message.MessageHandler;
 import com.foxminded.telebot.keyboard.KeyboardFactory;
 import com.foxminded.telebot.keyboard.service.KeyboardType;
@@ -31,7 +31,7 @@ public class GenresHandlerAction implements MessageHandler {
     }
 
     @Override
-    public Command getUniqueCommand() {
-        return Command.GENRES;
+    public MessageCommand getUniqueCommand() {
+        return MessageCommand.GENRES;
     }
 }
