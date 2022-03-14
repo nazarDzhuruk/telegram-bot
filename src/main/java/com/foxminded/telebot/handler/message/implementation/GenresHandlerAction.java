@@ -1,9 +1,8 @@
 package com.foxminded.telebot.handler.message;
 
 import com.foxminded.telebot.exception.UpdateHandlerException;
-import com.foxminded.telebot.handler.Command;
-import com.foxminded.telebot.keyboard.KeyboardService;
-import com.foxminded.telebot.service.GenreService;
+import com.foxminded.telebot.keyboard.KeyboardFactory;
+import com.foxminded.telebot.keyboard.KeyboardType;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -11,12 +10,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 @Component
 public class GenresHandlerAction implements MessageHandler {
-    private final GenreService genreService;
-    private final KeyboardService keyboardService;
 
-    public GenresHandlerAction(GenreService genreService, KeyboardService keyboardService) {
-        this.genreService = genreService;
-        this.keyboardService = keyboardService;
+    private final KeyboardFactory keyboardFactory;
+
+    public GenresHandlerAction(KeyboardFactory keyboardFactory) {
+        this.keyboardFactory = keyboardFactory;
     }
 
     @Override
@@ -25,7 +23,8 @@ public class GenresHandlerAction implements MessageHandler {
             String chatId = message.getChatId().toString();
             return SendMessage.builder().chatId(chatId).text("Genres: ")
                     .replyMarkup(InlineKeyboardMarkup.builder()
-                            .keyboard(keyboardService.genreButtons(genreService.getAll())).build()).build();
+                            .keyboard(keyboardFactory.getKeyboard(KeyboardType.GENRES)
+                                    .getButtons("")).build()).build();
         } else throw new UpdateHandlerException("No message");
     }
 

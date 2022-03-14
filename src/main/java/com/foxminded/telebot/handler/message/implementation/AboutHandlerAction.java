@@ -1,7 +1,6 @@
 package com.foxminded.telebot.handler.message;
 
 import com.foxminded.telebot.exception.UpdateHandlerException;
-import com.foxminded.telebot.handler.Command;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;

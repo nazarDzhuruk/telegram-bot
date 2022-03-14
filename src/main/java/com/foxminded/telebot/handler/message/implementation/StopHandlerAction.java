@@ -2,21 +2,16 @@ package com.foxminded.telebot.handler.message;
 
 import com.foxminded.telebot.exception.TelebotServiceException;
 import com.foxminded.telebot.exception.UpdateHandlerException;
-import com.foxminded.telebot.handler.Command;
-import com.foxminded.telebot.model.TelegramUser;
 import com.foxminded.telebot.service.TelegramUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
-public class StartHandlerAction implements MessageHandler {
-
+public class StopHandlerAction implements MessageHandler {
     private final TelegramUserService userService;
 
-    @Autowired
-    public StartHandlerAction(TelegramUserService userService) {
+    public StopHandlerAction(TelegramUserService userService) {
         this.userService = userService;
     }
 
@@ -25,18 +20,18 @@ public class StartHandlerAction implements MessageHandler {
         if (message.hasText()) {
             String username = message.getChat().getUserName();
             String chatId = message.getChatId().toString();
+
             try {
-                userService.addUser(new TelegramUser(Integer.parseInt(chatId), username));
+                userService.removeUserById(Integer.parseInt(chatId));
             } catch (TelebotServiceException e) {
-                return SendMessage.builder().text("Welcome back " + username).chatId(chatId).build();
+                throw new UpdateHandlerException(e.getMessage());
             }
-            return SendMessage.builder().text("Hello " + username).chatId(chatId).build();
+            return SendMessage.builder().chatId(chatId).text(username + " Goodbye !").build();
         } else throw new UpdateHandlerException("No message");
     }
 
     @Override
     public Command getUniqueCommand() {
-        return Command.START;
+        return Command.STOP;
     }
-
 }
