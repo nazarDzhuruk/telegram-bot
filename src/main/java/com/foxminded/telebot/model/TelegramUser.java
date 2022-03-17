@@ -10,7 +10,8 @@ public class TelegramUser {
     private Integer id;
     private String nickname;
 
-    protected TelegramUser(){}
+    protected TelegramUser() {
+    }
 
     public TelegramUser(Integer id, String nickname) {
         this.id = id;

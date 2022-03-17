@@ -1,96 +1,74 @@
 package com.foxminded.telebot.configuration;
 
 import com.foxminded.telebot.exception.TelebotWizzardException;
-import com.foxminded.telebot.handler.callback.Callback;
-import com.foxminded.telebot.handler.message.MessageCommand;
-import com.foxminded.telebot.handler.HandlerFactory;
+import com.foxminded.telebot.handler.HandlerUtil;
 import com.foxminded.telebot.service.GenreService;
 import com.foxminded.telebot.service.HtmlDataParser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import javax.annotation.PostConstruct;
-import java.util.Locale;
 
+@Slf4j
 @Component
 public class TelebotWizzard extends TelegramLongPollingBot {
+    private static final String LOG = "Telebot wizzard: ";
     private final BotConfiguration configuration;
     private final GenreService genreService;
-    private final HandlerFactory handleMessage;
+    private final HandlerUtil handlerUtil;
 
 
     @Autowired
-    public TelebotWizzard(HandlerFactory handleMessage, BotConfiguration configuration, GenreService genreService) {
+    public TelebotWizzard(HandlerUtil handlerUtil, BotConfiguration configuration, GenreService genreService) {
         this.configuration = configuration;
         this.genreService = genreService;
-        this.handleMessage = handleMessage;
+        this.handlerUtil = handlerUtil;
     }
 
     @PostConstruct
     public void init() {
+        log.trace(LOG + "initializing");
         HtmlDataParser.getGenres().forEach(genreService::addGenre);
         try {
+            log.info(LOG + "registering bot");
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(this);
         } catch (TelegramApiException e) {
-            throw new TelebotWizzardException(e.getMessage());
+            String msg = e.getMessage();
+            log.warn(LOG + msg);
+            throw new TelebotWizzardException(msg);
         }
-
     }
 
     @Override
     public String getBotUsername() {
+        log.trace(LOG + "getting bot name");
         return configuration.getBotUserName();
     }
 
     @Override
     public String getBotToken() {
+        log.trace(LOG + "getting bot token");
         return configuration.getBotToken();
     }
 
-
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.getMessage() != null && update.getMessage().hasText()) {
+        log.trace(LOG + "received update");
+        handlerUtil.sendMessage(update).forEach(message -> {
             try {
-                Message message = update.getMessage();
-                String command = message.getText().replace("/", "");
-                execute(handleMessage.handleUpdate(MessageCommand.valueOf(command.toUpperCase(Locale.ROOT)))
-                        .handleMessage(message));
+                log.info(LOG + "message executing");
+                execute(message);
             } catch (TelegramApiException e) {
-                throw new TelebotWizzardException(e.getMessage());
+                log.warn(LOG + e.getMessage());
+                e.printStackTrace();
             }
-        } else if (update.hasCallbackQuery()) {
-            String callbackData = update.getCallbackQuery().getData();
-            boolean one = genreService.getAll().stream().anyMatch(g -> g.getGenreName().equals(callbackData));
-
-            if (one) {
-                handleMessage.handleCallBack(Callback.GENRES)
-                        .getDescription(update.getCallbackQuery()).forEach(s -> {
-                            try {
-                                execute(s);
-                            } catch (TelegramApiException e) {
-                                e.printStackTrace();
-                            }
-                        });
-            }
-            else {
-                handleMessage.handleCallBack(Callback.SHOW)
-                        .getDescription(update.getCallbackQuery()).forEach(s -> {
-                            try {
-                                execute(s);
-                            } catch (TelegramApiException e) {
-                                e.printStackTrace();
-                            }
-                        });
-            }
-        }
+        });
     }
 }
-
