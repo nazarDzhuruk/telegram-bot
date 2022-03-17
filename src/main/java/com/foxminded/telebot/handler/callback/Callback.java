@@ -1,7 +1,7 @@
 package com.foxminded.telebot.handler.callback;
 
 public enum Callback {
-    GENRES("genres"),
+    GENRE("genres"),
     SHOW("show");
 
     private final String name;
