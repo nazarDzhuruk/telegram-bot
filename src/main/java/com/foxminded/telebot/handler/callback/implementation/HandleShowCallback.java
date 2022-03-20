@@ -18,7 +18,7 @@ public class HandleShowCallback implements CallbackHandler {
 
     @Override
     public List<SendMessage> getDescription(CallbackQuery callbackQuery) {
-        log.info(LOG + "data generated");
+        log.info(LOG + callbackQuery.getData() + " data generated");
         return List.of(message(callbackQuery));
     }
 

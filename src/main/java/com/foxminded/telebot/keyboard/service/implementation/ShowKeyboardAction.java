@@ -25,7 +25,7 @@ public class ShowKeyboardAction implements KeyboardService {
         showButton.add(InlineKeyboardButton.builder().text(KEYBOARD_BUTTON_TEXT).callbackData(setCallBack).build());
         showKeyboard.add(showButton);
 
-        log.info(LOG + "buttons has been generated");
+        log.info(LOG + setCallBack + " button has been created");
         return showKeyboard;
     }
 

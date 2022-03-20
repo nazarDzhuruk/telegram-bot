@@ -17,6 +17,7 @@ public class GenresHandlerAction implements MessageHandler {
     private static final String EXPECTED_EXCEPTION = "No message";
     private static final String TEXT_MESSAGE = "Film genres: ";
     private static final String GENRE = "genre:";
+    private static final String LOG = "Message handler: Genres – ";
     private final KeyboardFactory keyboardFactory;
 
     public GenresHandlerAction(KeyboardFactory keyboardFactory) {
@@ -25,10 +26,10 @@ public class GenresHandlerAction implements MessageHandler {
 
     @Override
     public SendMessage handleMessage(Message message) {
-        log.trace("Message handler: Genres – accessed");
+        log.trace("accessed");
 
         if (message.hasText()) {
-            log.info("Message handler: Genres – send message");
+            log.info(LOG + "send message");
 
             String chatId = message.getChatId().toString();
             return SendMessage.builder().chatId(chatId).text(TEXT_MESSAGE)
@@ -36,7 +37,7 @@ public class GenresHandlerAction implements MessageHandler {
                             .keyboard(keyboardFactory.getKeyboard(KeyboardType.GENRES)
                                     .getButtons(GENRE)).build()).build();
         } else {
-            log.warn("Message handler: Genres – message not found; throws runtime exception");
+            log.warn(LOG + "message not found; throws runtime exception");
 
             throw new UpdateHandlerException(EXPECTED_EXCEPTION);
         }

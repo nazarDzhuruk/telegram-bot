@@ -11,13 +11,14 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Slf4j
 @Component
 public class AboutHandlerAction implements MessageHandler {
+    private static final String LOG = "Message handler: About – ";
 
     @Override
     public SendMessage handleMessage(Message message) {
-        log.trace("Message handler: About – accessed");
+        log.trace(LOG + "accessed");
 
         if (message.hasText()) {
-            log.info("Message handler: About – send message");
+            log.info(LOG + "send message");
 
             String username = message.getChat().getUserName();
             String chatId = message.getChatId().toString();
@@ -27,7 +28,7 @@ public class AboutHandlerAction implements MessageHandler {
                     " The project is open source and you can use it as a base for your bot." +
                     " Here you can find code: https://github.com/nazarDzhuruk/telegram-bot").build();
         } else {
-            log.warn("Message handler: About – message not found; throws runtime exception");
+            log.warn(LOG + "message not found; throws runtime exception");
 
             throw new UpdateHandlerException("No message");
         }

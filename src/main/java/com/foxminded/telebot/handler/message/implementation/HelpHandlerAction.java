@@ -12,13 +12,14 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 public class HelpHandlerAction implements MessageHandler {
     private static final String COLON_SPACE = ": ";
+    private static final String LOG = "Message handler: Help – ";
 
     @Override
     public SendMessage handleMessage(Message message) {
-        log.trace("Message handler: Help – accessed");
+        log.trace(LOG + "accessed");
 
         if (message.hasText()) {
-            log.info("Message handler: Help – send message");
+            log.info(LOG + "send message");
 
             String chatId = message.getChatId().toString();
             return SendMessage.builder().chatId(chatId).text("Supported commands:" + "\r\n" +
@@ -33,7 +34,7 @@ public class HelpHandlerAction implements MessageHandler {
                     "\n" +
                     MessageCommand.HELP.getName() + COLON_SPACE + MessageCommand.HELP.getDescription()).build();
         } else {
-            log.warn("Message handler: Help – message not found; throws runtime exception");
+            log.warn(LOG + "message not found; throws runtime exception");
 
             throw new UpdateHandlerException("No message");
         }

@@ -3,6 +3,7 @@ package com.foxminded.telebot.keyboard.service.implementation;
 import com.foxminded.telebot.keyboard.service.KeyboardService;
 import com.foxminded.telebot.keyboard.service.KeyboardType;
 import com.foxminded.telebot.service.GenreService;
+import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
