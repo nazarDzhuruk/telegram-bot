@@ -1,10 +1,8 @@
 package com.foxminded.telebot.keyboard.service;
 
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
-import java.util.List;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 public interface KeyboardService {
-    List<List<InlineKeyboardButton>> getButtons(String setCallBack);
+    ReplyKeyboard setKeyboard(String setCallBack);
     KeyboardType getType();
 }

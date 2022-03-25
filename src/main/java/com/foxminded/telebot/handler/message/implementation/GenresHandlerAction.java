@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 @Slf4j
 @Component
@@ -33,9 +32,7 @@ public class GenresHandlerAction implements MessageHandler {
 
             String chatId = message.getChatId().toString();
             return SendMessage.builder().chatId(chatId).text(TEXT_MESSAGE)
-                    .replyMarkup(InlineKeyboardMarkup.builder()
-                            .keyboard(keyboardFactory.getKeyboard(KeyboardType.GENRES)
-                                    .getButtons(GENRE)).build()).build();
+                    .replyMarkup(keyboardFactory.getKeyboard(KeyboardType.GENRES).setKeyboard(GENRE)).build();
         } else {
             log.warn(LOG + "message not found; throws runtime exception");
 
