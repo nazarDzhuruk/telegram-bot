@@ -2,6 +2,7 @@ package com.foxminded.telebot.configuration;
 
 import com.foxminded.telebot.exception.TelebotWizzardException;
 import com.foxminded.telebot.handler.HandlerUtil;
+import com.foxminded.telebot.model.StaticLink;
 import com.foxminded.telebot.service.GenreService;
 import com.foxminded.telebot.service.HtmlDataParser;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ import javax.annotation.PostConstruct;
 @Slf4j
 @Component
 public class TelebotWizzard extends TelegramLongPollingBot {
-    private static final String LOG = "Telebot wizzard: ";
+    private static final String LOG = StaticLink.TEXT_CYAN + "Telebot wizzard: " + StaticLink.TEXT_RESET;
     private final BotConfiguration configuration;
     private final GenreService genreService;
     private final HandlerUtil handlerUtil;
@@ -65,6 +66,7 @@ public class TelebotWizzard extends TelegramLongPollingBot {
             try {
                 log.info(LOG + "message executing");
                 execute(message);
+                log.info(LOG + "message " + StaticLink.TEXT_GREEN + "executed" + StaticLink.TEXT_RESET);
             } catch (TelegramApiException e) {
                 log.warn(LOG + e.getMessage());
                 e.printStackTrace();
