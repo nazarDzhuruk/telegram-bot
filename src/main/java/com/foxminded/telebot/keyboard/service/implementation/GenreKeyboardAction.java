@@ -24,11 +24,12 @@ public class GenreKeyboardAction implements KeyboardService {
 
     @Override
     public ReplyKeyboard setKeyboard(String setCallBack) {
+        log.trace(LOG + "accessed");
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
 
         genreService.getAll().forEach(g -> buttons.add(List.of(InlineKeyboardButton.builder()
                 .text(g.getGenreName()).callbackData(setCallBack + g.getGenreName()).build())));
-
+        log.info(LOG + setCallBack + " button has been created");
         return InlineKeyboardMarkup.builder().keyboard(buttons).build();
     }
 
