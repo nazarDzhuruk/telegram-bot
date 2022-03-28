@@ -11,9 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -45,11 +43,6 @@ public class HandleGenreCallback implements CallbackHandler {
         List<String> titles = HtmlDataParser.getTitles(genreWithLink.getLink(), "");
         List<String> rating = HtmlDataParser.getFilmRating(genreWithLink.getLink());
 
-        List<String> msg = new ArrayList<>();
-        msg.add("<-");
-        msg.add(" ");
-        msg.add("->");
-
         log.info(LOG + genre + " about generated");
 
         List<SendMessage> collect = IntStream.range(0, links.size()).mapToObj(i -> SendMessage.builder()
@@ -61,7 +54,7 @@ public class HandleGenreCallback implements CallbackHandler {
         collect.add(SendMessage.builder().chatId(callbackQuery.getMessage().getChatId().toString())
                 .text("Navigate")
                 .replyMarkup(keyboardFactory
-                        .getKeyboard(KeyboardType.PAGE_CONTROL).setKeyboard(null)).build());
+                        .getKeyboard(KeyboardType.PAGE_CONTROL).setKeyboard(genreWithLink.getLink())).build());
 
         return collect;
     }
