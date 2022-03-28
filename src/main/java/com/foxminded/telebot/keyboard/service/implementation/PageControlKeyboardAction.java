@@ -2,36 +2,42 @@ package com.foxminded.telebot.keyboard.service.implementation;
 
 import com.foxminded.telebot.keyboard.service.KeyboardService;
 import com.foxminded.telebot.keyboard.service.KeyboardType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @Component
 public class PageControlKeyboardAction implements KeyboardService {
+    private static final String LOG = "Keyboard service: Page Control – ";
 
     @Override
     public ReplyKeyboard setKeyboard(String setCallBack) {
+        log.trace(LOG + "accessed");
 
-        List<KeyboardRow> keyboardRows = new ArrayList<>();
-        KeyboardRow keyboardButtons = new KeyboardRow();
+        List<List<InlineKeyboardButton>> inlineButtons = new ArrayList<>();
 
-        Stream.of("<-", " ", "->")
-                .map(b -> KeyboardButton.builder().text(b).build()).forEach(keyboardButtons::add);
+        inlineButtons.add(Stream.of("previous", " ", "next")
+                .map(b -> InlineKeyboardButton.builder().text(b).callbackData(b + ":" + setCallBack).build())
+                .collect(Collectors.toList()));
 
+        log.info(LOG + setCallBack + " button has been created");
 
-        keyboardRows.add(keyboardButtons);
-
-        return ReplyKeyboardMarkup.builder().selective(true).keyboard(keyboardRows).build();
+        return InlineKeyboardMarkup.builder().keyboard(inlineButtons).build();
     }
 
     @Override
     public KeyboardType getType() {
         return KeyboardType.PAGE_CONTROL;
     }
+
 }
