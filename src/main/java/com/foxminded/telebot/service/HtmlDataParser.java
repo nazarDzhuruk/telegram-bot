@@ -40,9 +40,9 @@ public class HtmlDataParser {
 
     }
 
-    public static List<String> getTitles(String genreLink, String pageNumber) {
+    public static List<String> getTitles(String genreLink) {
         log.trace(LOG + "titles parsing method accessed");
-        String path = StaticLink.MAIN_LINK + genreLink + pageNumber;
+        String path = StaticLink.MAIN_LINK + genreLink;
         try {
             log.info(LOG + path + " building connection");
             mapper = Jsoup.connect(path).get();
@@ -55,9 +55,9 @@ public class HtmlDataParser {
     }
 
 
-    public static List<String> getFilmsLink(String genreLink, String pageNumber) {
+    public static List<String> getFilmsLink(String genreLink) {
         log.trace(LOG + "parsing films link; method accessed");
-        String path = StaticLink.MAIN_LINK + genreLink + pageNumber;
+        String path = StaticLink.MAIN_LINK + genreLink;
         try {
             log.info(LOG + path + " building connection");
             mapper = Jsoup.connect(path).get();

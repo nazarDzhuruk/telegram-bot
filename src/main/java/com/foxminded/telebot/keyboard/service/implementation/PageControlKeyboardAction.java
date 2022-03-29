@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +17,9 @@ import java.util.stream.Stream;
 @Component
 public class PageControlKeyboardAction implements KeyboardService {
     private static final String LOG = "Keyboard service: Page Control – ";
+    private static final String PREV = "previous";
+    private static final String SPACE = " ";
+    private static final String NEXT = "next";
 
     @Override
     public ReplyKeyboard setKeyboard(String setCallBack) {
@@ -26,7 +27,7 @@ public class PageControlKeyboardAction implements KeyboardService {
 
         List<List<InlineKeyboardButton>> inlineButtons = new ArrayList<>();
 
-        inlineButtons.add(Stream.of("previous", " ", "next")
+        inlineButtons.add(Stream.of(PREV, SPACE, NEXT)
                 .map(b -> InlineKeyboardButton.builder().text(b).callbackData(b + ":" + setCallBack).build())
                 .collect(Collectors.toList()));
 

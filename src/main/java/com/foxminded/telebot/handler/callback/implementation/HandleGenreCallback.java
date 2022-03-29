@@ -2,19 +2,16 @@ package com.foxminded.telebot.handler.callback.implementation;
 
 import com.foxminded.telebot.handler.callback.Callback;
 import com.foxminded.telebot.handler.callback.CallbackHandler;
+import com.foxminded.telebot.handler.callback.implementation.helper.Browser;
 import com.foxminded.telebot.keyboard.KeyboardFactory;
-import com.foxminded.telebot.keyboard.service.KeyboardType;
 import com.foxminded.telebot.model.Genre;
 import com.foxminded.telebot.service.GenreService;
-import com.foxminded.telebot.service.HtmlDataParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Slf4j
 @Component
@@ -36,27 +33,11 @@ public class HandleGenreCallback implements CallbackHandler {
         log.trace(LOG + "accessed");
         String genre = callbackQuery.getData().split(COLON)[1];
 
+        String chatId = callbackQuery.getMessage().getChatId().toString();
         Genre genreWithLink = genreService.getAll().stream().filter(g -> g.getGenreName().equals(genre))
                 .findAny().orElseThrow();
 
-        List<String> links = HtmlDataParser.getFilmsLink(genreWithLink.getLink(), "");
-        List<String> titles = HtmlDataParser.getTitles(genreWithLink.getLink(), "");
-        List<String> rating = HtmlDataParser.getFilmRating(genreWithLink.getLink());
-
-        log.info(LOG + genre + " about generated");
-
-        List<SendMessage> collect = IntStream.range(0, links.size()).mapToObj(i -> SendMessage.builder()
-                        .chatId(callbackQuery.getMessage().getChatId().toString())
-                        .text(titles.get(i) + "\n" + rating.get(i))
-                        .replyMarkup(keyboardFactory.getKeyboard(KeyboardType.SHOW).setKeyboard(SHOW + links.get(i))).build())
-                .collect(Collectors.toList());
-
-        collect.add(SendMessage.builder().chatId(callbackQuery.getMessage().getChatId().toString())
-                .text("Navigate")
-                .replyMarkup(keyboardFactory
-                        .getKeyboard(KeyboardType.PAGE_CONTROL).setKeyboard(genreWithLink.getLink())).build());
-
-        return collect;
+        return Browser.browsePage(chatId, genreWithLink.getLink(), keyboardFactory);
     }
 
     @Override

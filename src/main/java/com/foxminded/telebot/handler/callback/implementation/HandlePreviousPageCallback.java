@@ -2,19 +2,17 @@ package com.foxminded.telebot.handler.callback.implementation;
 
 import com.foxminded.telebot.handler.callback.Callback;
 import com.foxminded.telebot.handler.callback.CallbackHandler;
+import com.foxminded.telebot.handler.callback.implementation.helper.Browser;
 import com.foxminded.telebot.keyboard.KeyboardFactory;
-import com.foxminded.telebot.keyboard.service.KeyboardType;
-import com.foxminded.telebot.service.HtmlDataParser;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class HandlePreviousPageCallback implements CallbackHandler {
-
+    private static final String SHOW = "show:";
     private static final String COLON = ":";
     private static final String PAGE = "page/";
     private final KeyboardFactory keyboardFactory;
@@ -40,14 +38,7 @@ public class HandlePreviousPageCallback implements CallbackHandler {
 
         String chatId = callbackQuery.getMessage().getChatId().toString();
 
-        List<SendMessage> nextPageFilm = HtmlDataParser.getTitles(linkData, "")
-                .stream().map(f -> SendMessage.builder().chatId(chatId)
-                        .text(f).build()).collect(Collectors.toList());
-
-        nextPageFilm.add(SendMessage.builder().chatId(chatId).text("Navigate")
-                .replyMarkup(keyboardFactory.getKeyboard(KeyboardType.PAGE_CONTROL).setKeyboard(linkData)).build());
-
-        return nextPageFilm;
+        return Browser.browsePage(chatId, linkData, keyboardFactory);
     }
 
     @Override
