@@ -8,13 +8,14 @@ import com.foxminded.telebot.service.TelegramUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Slf4j
 @Component
 public class StopHandlerAction implements MessageHandler {
     private static final String EXPECTED_EXCEPTION = "No message";
-    private static final String GOODBYE_MESSAGE = "GOODBYE !";
+    private static final String GOODBYE_MESSAGE = "GOODBYE ";
     private static final String LOG = "Message handler: Stop – ";
     private final TelegramUserService userService;
 
@@ -27,8 +28,10 @@ public class StopHandlerAction implements MessageHandler {
         log.trace(LOG + "accessed");
 
         if (message.hasText()) {
-            String username = message.getChat().getUserName();
-            String chatId = message.getChatId().toString();
+            Chat chat = message.getChat();
+
+            String username = chat.getUserName();
+            String chatId = chat.getId().toString();
 
             try {
                 log.info(LOG + "removing user from database");

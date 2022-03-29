@@ -6,6 +6,7 @@ import com.foxminded.telebot.handler.message.MessageHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Slf4j
@@ -19,9 +20,11 @@ public class AboutHandlerAction implements MessageHandler {
 
         if (message.hasText()) {
             log.info(LOG + "send message");
+            Chat chat = message.getChat();
 
-            String username = message.getChat().getUserName();
-            String chatId = message.getChatId().toString();
+            String username = chat.getUserName();
+            String chatId = chat.getId().toString();
+
             return SendMessage.builder().chatId(chatId).text("Hello " + username +
                     " I'm glad that you are interested in my project" +
                     " This telegram bot can send movies with descriptions." +

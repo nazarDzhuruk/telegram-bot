@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Slf4j
@@ -32,15 +33,19 @@ public class StartHandlerAction implements MessageHandler {
 
         if (message.hasText()) {
 
-            String username = message.getChat().getUserName();
-            String chatId = message.getChatId().toString();
-            try {
-                log.info(LOG + "register new user");
+            Chat chat = message.getChat();
 
+            String username = chat.getUserName();
+            String chatId = chat.getId().toString();
+
+            try {
                 userService.addUser(new TelegramUser(Integer.parseInt(chatId), username));
+
+                log.info(LOG + "register new user");
             } catch (TelebotServiceException e) {
                 log.info(LOG + e.getMessage());
 
+                log.info(LOG + "send welcome back message");
                 return SendMessage.builder().text(WELCOME_MESSAGE + username).chatId(chatId).build();
             }
             log.info(LOG + "send hello message for new user");
